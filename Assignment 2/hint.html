@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HARDWARE_DIAGNOSTIC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/hint.css"/>
+</head>
+<body>
+
+<!-- BACKGROUND MUSIC -->
+<div style="display:none">
+  <iframe id="bg-music"
+    src="https://www.youtube.com/embed/Dvwaq1rwioQ?autoplay=1&loop=1&playlist=Dvwaq1rwioQ&mute=0"
+    allow="autoplay; encrypted-media" frameborder="0">
+  </iframe>
+</div>
+
+<!-- MUSIC TOGGLE BUTTON -->
+<button id="music-btn" onclick="toggleMusic()">♪ MUSIC</button>
+
+<!-- MAIN CONTENT -->
+<div class="terminal">
+  <div class="header">&gt; LOG_DECRYPT_OVERRIDE</div>
+
+  <div class="entry">
+    <span class="label">Hardware: Chronometer Sync</span>
+    <p class="hint-text">
+      The clock face indicates a specific chemical element. Every unit of time is defined
+      by the internal oscillations of that element's atoms.
+    </p>
+    <div class="cmd">INPUT: Retrieve the 10-digit frequency constant from the clock.</div>
+  </div>
+
+  <div class="entry">
+    <span class="label">Input: Raw Frequency Data</span>
+    <p class="hint-text">
+      The PC is outputting raw frequency values in scientific notation. To convert these
+      back into usable temporal units, they must be processed against the clock's constant.
+    </p>
+    <div class="cmd">CALCULATION: [PC Value] / [Clock Constant]</div>
+  </div>
+
+  <div class="entry">
+    <span class="label">Operator: Linguistic Cipher</span>
+    <p class="hint-text">
+      The string <b style="color:var(--neon)">"rdnl"</b> on the poster is a vowel-stripped command.
+      The variable <b style="color:var(--neon)">(Z)</b> is the scientific notation for
+      the <b>Atomic Number</b> of the element in the room.
+    </p>
+    <div class="cmd">DECODE: _ r d _ n _ l ( [Z] )</div>
+  </div>
+
+  <div class="entry">
+    <span class="label">Mapping: Radial Translation</span>
+    <p class="hint-text">
+      Once you have the value from the calculation, map it to the floor rug.
+      Observe the spacing between characters to determine the correct rotation.
+    </p>
+    <div class="cmd">GRID: 360-degree alphabet map.</div>
+  </div>
+
+  <a href="rm.html" class="btn-back">RETURN TO FACILITY</a>
+</div>
+
+<script>
+let _musicOn = true;
+
+function toggleMusic() {
+  const iframe = document.getElementById('bg-music');
+  const btn    = document.getElementById('music-btn');
+  if (!iframe || !btn) return;
+
+  if (_musicOn) {
+    iframe.src = iframe.src.replace('autoplay=1', 'autoplay=0');
+    btn.textContent = '♪ OFF';
+    btn.style.borderColor = '#1a3a1a';
+    btn.style.boxShadow   = 'none';
+  } else {
+    iframe.src = iframe.src.replace('autoplay=0', 'autoplay=1');
+    btn.textContent = '♪ MUSIC';
+    btn.style.borderColor = '#39ff14';
+    btn.style.boxShadow   = '0 0 10px #39ff14';
+  }
+  _musicOn = !_musicOn;
+}
+
+/* start music on first click (browser autoplay policy) */
+document.addEventListener('click', function _startMusic() {
+  const iframe = document.getElementById('bg-music');
+  if (iframe) iframe.src = iframe.src;
+  document.removeEventListener('click', _startMusic);
+}, { once: true });
+</script>
+
+</body>
+</html>

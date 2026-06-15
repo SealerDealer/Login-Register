@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="styles/rm.css"/>
+  <title>rm.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;600&family=Inconsolata:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<div id="room-wrap">
+
+  <!-- MOTIVATION BOARD -->
+  <div id="moti-board">
+    <div style="background:#0d1117;border:1.5px solid #1e3a1e;border-radius:2px;padding:14px 20px;box-shadow:0 0 30px rgba(0,0,0,.6)">
+      <div style="font-family:'Cinzel',serif;font-size:16px;color:#c8d8c8;letter-spacing:3px;line-height:1.7">逆水行舟</div>
+      <div style="font-family:'Cinzel',serif;font-size:16px;color:#c8d8c8;letter-spacing:3px;line-height:1.7">不进则退</div>
+      <div style="width:55%;height:1px;background:#1e3a1e;margin:8px auto"></div>
+      <div style="font-size:8px;color:#2a4a2a;letter-spacing:1px;line-height:1.8;font-style:italic">"Forge ahead — or be swept back"</div>
+    </div>
+  </div>
+
+  <div style="display:none">
+    <iframe id="bg-music"
+      src="https://www.youtube.com/embed/Dvwaq1rwioQ?autoplay=1&loop=1&playlist=Dvwaq1rwioQ&mute=0"
+      allow="autoplay; encrypted-media" frameborder="0">
+    </iframe>
+  </div>
+  <!-- Music toggle -->
+  <button id="music-btn" onclick="toggleMusic()">♪ MUSIC</button>
+
+  <svg id="room-svg" viewBox="0 0 1440 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <style>
+      .L  { stroke:#c8d8c8; stroke-width:1.5; fill:none; stroke-linecap:round; stroke-linejoin:round }
+      .Lt { stroke:#c8d8c8; stroke-width:1;   fill:none; stroke-linecap:round; stroke-linejoin:round }
+      .Lb { stroke:#c8d8c8; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round }
+      text.t { font-family:'Share Tech Mono',monospace; fill:#c8d8c8 }
+      .hotspot  { fill:transparent; cursor:pointer }
+      .obj-glow { opacity:0; pointer-events:none; transition:opacity .2s }
+    </style>
+    <filter id="sg"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="gg"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+
+  <!-- BG -->
+  <rect fill="#0d1117" x="0" y="0" width="1440" height="500"/>
+  <line class="Lt" x1="0" y1="365" x2="1440" y2="365" stroke-opacity=".18"/>
+  <rect fill="#090c0f" x="0" y="365" width="1440" height="135"/>
+  <line class="Lt" x1="0" y1="120" x2="1440" y2="120" stroke-opacity=".04"/>
+  <line class="Lt" x1="0" y1="240" x2="1440" y2="240" stroke-opacity=".04"/>
+
+  <!-- ═══ DOOR ═══ -->
+  <rect class="Lb" x="250" y="55" width="195" height="310" rx="2"/>
+  <rect class="Lt" x="265" y="70"  width="163" height="120" rx="1"/>
+  <rect class="Lt" x="265" y="203" width="163" height="148" rx="1"/>
+  <line class="Lt" x1="265" y1="195" x2="428" y2="195"/>
+  <!-- keypad -->
+  <rect class="L" x="382" y="120" width="42" height="64" rx="3"/>
+  <rect fill="#0a1208" stroke="#c8d8c8" stroke-width=".8" x="387" y="124" width="32" height="15" rx="1"/>
+  <rect fill="#0a1e06" x="388" y="125" width="30" height="13" rx="1" opacity=".8"/>
+  <text class="t" x="389" y="135" font-size="7" fill="#50d050" filter="url(#sg)">* * * *</text>
+  <g transform="translate(120,-70)">
+    <rect class="Lt" x="268" y="214" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="279" y="214" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="290" y="214" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="268" y="224" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="279" y="224" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="290" y="224" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="268" y="234" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="279" y="234" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="290" y="234" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="268" y="244" width="8" height="7" rx="1"/>
+    <rect class="Lt" x="279" y="244" width="20" height="7" rx="1"/>
+  </g>
+  <!-- padlock -->
+  <g transform="translate(160,140)" opacity=".7">
+    <rect class="Lt" x="238" y="84" width="16" height="13" rx="2"/>
+    <path class="Lt" d="M241 84 v-5 a5 5 0 0 1 10 0 v5"/>
+    <circle class="Lt" cx="246" cy="90" r="2"/>
+  </g>
+  <rect class="hotspot" id="hs-door" x="245" y="53" width="200" height="314" onclick="openModal('door')"/>
+  <rect id="glow-door" class="obj-glow" x="245" y="51" width="204" height="318" rx="3" fill="none" stroke="#80ff80" stroke-width="1.5" stroke-opacity=".5"/>
+  <!-- keypad unlock indicator -->
+  <rect id="keypad-ok-bg"  x="388" y="125" width="30" height="13" rx="1" fill="#0a2008" opacity="0"/>
+  <text id="keypad-ok-txt" x="391" y="135" font-size="7" fill="#60ff60" filter="url(#sg)" opacity="0">OPEN</text>
+
+  <!-- ═══ PLANT (cosmetic) ═══ -->
+  <g transform="translate(100,0)">
+    <path class="L"  d="M382 365 l8-55 h46 l8 55 z"/>
+    <line class="Lt" x1="376" y1="365" x2="450" y2="365"/>
+    <path class="L"  d="M413 310 q0-22 0-45"/>
+    <path class="Lt" d="M413 285 q-28-18-48-30 q8 18 48 30"/>
+    <path class="Lt" d="M413 272 q30-22 52-32 q-14 17-52 32"/>
+    <path class="Lt" d="M413 300 q-22-12-38-24 q6 14 38 24"/>
+    <path class="Lt" d="M413 295 q25-15 44-25 q-11 14-44 25"/>
+    <path class="Lt" d="M413 265 q-16-28-14-52 q10 22 14 52"/>
+    <path class="Lt" d="M413 260 q18-26 18-50 q-8 22-18 50"/>
+  </g>
+
+  <!-- ═══ SUN POSTER ═══ -->
+  <rect class="L" x="482" y="43" width="130" height="130" rx="2"/>
+  <svg x="498" y="60" width="100" height="100" viewBox="0 0 50 50">
+    <path fill="#c8d8c8" opacity=".6" d="M 24.984375 3.9863281 A 1.0001 1.0001 0 0 0 24 5 L 24 11 A 1.0001 1.0001 0 1 0 26 11 L 26 5 A 1.0001 1.0001 0 0 0 24.984375 3.9863281 z M 10.888672 9.890625 A 1.0001 1.0001 0 0 0 10.193359 11.607422 L 14.392578 15.806641 A 1.0001 1.0001 0 1 0 15.806641 14.392578 L 11.607422 10.193359 A 1.0001 1.0001 0 0 0 10.888672 9.890625 z M 39.080078 9.890625 A 1.0001 1.0001 0 0 0 38.392578 10.193359 L 34.193359 14.392578 A 1.0001 1.0001 0 1 0 35.607422 15.806641 L 39.806641 11.607422 A 1.0001 1.0001 0 0 0 39.080078 9.890625 z M 25 15 A 1.0001 1.0001 0 0 0 24.900391 15.003906 A 1.0001 1.0001 0 0 0 24.800781 15.017578 A 1.0001 1.0001 0 0 0 24.591797 15.082031 C 21.997611 15.191772 19.639402 16.21216 17.925781 17.925781 C 16.117449 19.734126 15 22.233333 15 25 C 15 30.533333 19.466667 35 25 35 C 29.15 35 32.699219 32.487109 34.214844 28.896484 C 34.720052 27.699609 35 26.383333 35 25 C 35 20.85 32.487109 17.300781 28.896484 15.785156 C 27.82556 15.333112 26.634837 15.134077 25.410156 15.082031 A 1.0001 1.0001 0 0 0 25.363281 15.0625 A 1.0001 1.0001 0 0 0 25.169922 15.011719 A 1.0001 1.0001 0 0 0 25.070312 15.001953 A 1.0001 1.0001 0 0 0 25 15 z M 5 24 A 1.0001 1.0001 0 1 0 5 26 L 11 26 A 1.0001 1.0001 0 1 0 11 24 L 5 24 z M 39 24 A 1.0001 1.0001 0 1 0 39 26 L 45 26 A 1.0001 1.0001 0 1 0 45 24 L 39 24 z M 15.080078 33.890625 A 1.0001 1.0001 0 0 0 14.392578 34.193359 L 10.193359 38.392578 A 1.0001 1.0001 0 1 0 11.607422 39.806641 L 15.806641 35.607422 A 1.0001 1.0001 0 0 0 15.080078 33.890625 z M 34.888672 33.890625 A 1.0001 1.0001 0 0 0 34.193359 35.607422 L 38.392578 39.806641 A 1.0001 1.0001 0 1 0 39.806641 38.392578 L 35.607422 34.193359 A 1.0001 1.0001 0 0 0 34.888672 33.890625 z M 24.984375 37.986328 A 1.0001 1.0001 0 0 0 24 39 L 24 45 A 1.0001 1.0001 0 1 0 26 45 L 26 39 A 1.0001 1.0001 0 0 0 24.984375 37.986328 z"/>
+  </svg>
+  <rect class="hotspot" x="480" y="41" width="134" height="134" onclick="openModal('sun')"/>
+  <rect id="glow-sun" class="obj-glow" x="478" y="39" width="138" height="138" rx="3" fill="none" stroke="#80ff80" stroke-width="1.5" stroke-opacity=".5"/>
+
+  <!-- ═══ WINDOW ═══ -->
+  <g transform="translate(800,40)">
+    <rect class="Lb" x="0" y="0" width="100" height="100" rx="2"/>
+    <line class="Lt" x1="50" y1="0"   x2="50"  y2="100" stroke-opacity=".4"/>
+    <line class="Lt" x1="0"  y1="50"  x2="100" y2="50"  stroke-opacity=".4"/>
+    <rect class="hotspot" x="0" y="0" width="100" height="100" onclick="openModal('window')"/>
+    <rect id="glow-window" class="obj-glow" x="-3" y="-3" width="106" height="106" rx="3" fill="none" stroke="#80ff80" stroke-width="1.5" stroke-opacity=".5"/>
+  </g>
+
+  <!-- ═══ DESK ═══ -->
+  <rect fill="#0f1410" stroke="#c8d8c8" stroke-width="2" x="610" y="278" width="440" height="14" rx="1"/>
+  <rect class="Lt" x="624" y="292" width="14" height="73" rx="1"/>
+  <rect class="Lt" x="1020" y="292" width="14" height="73" rx="1"/>
+  <rect class="L"  x="968" y="292" width="52" height="73" rx="1"/>
+  <line class="Lt" x1="968" y1="317" x2="1020" y2="317"/>
+  <line class="Lt" x1="968" y1="342" x2="1020" y2="342"/>
+  <circle class="Lt" cx="996" cy="304" r="3"/>
+  <circle class="Lt" cx="996" cy="329" r="3"/>
+  <circle class="Lt" cx="996" cy="353" r="3"/>
+  <rect fill="#0a0e0c" stroke="#c8d8c8" stroke-width=".5" x="648" y="265" width="308" height="14" rx="1" opacity=".4"/>
+
+  <!-- ═══ MONITOR + PC TOWER ═══ -->
+  <rect class="L" x="735" y="150" width="208" height="114" rx="2"/>
+  <rect fill="#060e06" stroke="#c8d8c8" stroke-width=".7" x="743" y="157" width="192" height="100" rx="1"/>
+  <rect fill="#1a2a10" x="748" y="160" width="85"  height="7" rx="1" opacity=".7"/>
+  <rect fill="#1a2a10" x="748" y="171" width="130" height="7" rx="1" opacity=".5"/>
+  <rect fill="#1a2a10" x="748" y="182" width="65"  height="7" rx="1" opacity=".65"/>
+  <rect fill="#1a2a10" x="748" y="193" width="105" height="7" rx="1" opacity=".4"/>
+  <rect fill="#1a2a10" x="748" y="204" width="95"  height="7" rx="1" opacity=".7"/>
+  <rect fill="#1a2a10" x="748" y="215" width="75"  height="7" rx="1" opacity=".5"/>
+  <rect fill="#1a2a10" x="748" y="226" width="115" height="7" rx="1" opacity=".6"/>
+  <rect fill="#80ff80" x="748" y="245" width="8"   height="7" rx="1" opacity=".7" filter="url(#sg)"/>
+  <rect class="Lt" x="820" y="264" width="38" height="10" rx="1"/>
+  <rect class="Lt" x="808" y="274" width="62" height="4"  rx="1"/>
+  <rect class="L"  x="958" y="186" width="58" height="92" rx="2"/>
+  <rect class="Lt" x="965" y="196" width="44" height="10" rx="1"/>
+  <rect fill="#060e06" stroke="#c8d8c8" stroke-width=".6" x="965" y="210" width="20" height="14" rx="1"/>
+  <circle class="L"  cx="994" cy="217" r="6"/>
+  <circle class="Lt" cx="994" cy="217" r="2.5"/>
+  <rect class="Lt" x="965" y="230" width="44" height="5" rx="1" opacity=".45"/>
+  <rect class="Lt" x="965" y="239" width="44" height="5" rx="1" opacity=".45"/>
+  <rect class="Lt" x="965" y="248" width="44" height="5" rx="1" opacity=".45"/>
+  <circle class="Lt" cx="969" cy="192" r="2.5"/>
+  <rect class="hotspot" x="733" y="150" width="210" height="130" onclick="openModal('pc')"/>
+  <rect id="glow-pc" class="obj-glow" x="731" y="148" width="214" height="134" rx="3" fill="none" stroke="#80ff80" stroke-width="1.5" stroke-opacity=".5"/>
+
+  <!-- ═══ CALCULATOR ═══ -->
+  <rect class="L"  x="658" y="234" width="66" height="43" rx="3"/>
+  <rect fill="#060e04" stroke="#c8d8c8" stroke-width=".7" x="663" y="238" width="56" height="14" rx="1"/>
+  <rect fill="#0a1e04" x="664" y="239" width="54" height="12" rx="1" opacity=".8"/>
+  <text class="t" x="689" y="248" font-size="12" fill="#90e040" filter="url(#sg)">÷</text>
+  <rect class="Lt" x="664" y="255" width="12" height="8" rx="1"/>
+  <rect class="Lt" x="678" y="255" width="12" height="8" rx="1"/>
+  <rect class="Lt" x="692" y="255" width="12" height="8" rx="1"/>
+  <rect class="Lt" x="706" y="255" width="12" height="8" rx="1"/>
+  <rect class="Lt" x="664" y="266" width="12" height="8" rx="1"/>
+  <rect class="Lt" x="678" y="266" width="12" height="8" rx="1"/>
+  <rect class="Lt" x="692" y="266" width="12" height="8" rx="1"/>
+  <rect class="Lt" x="706" y="266" width="12" height="8" rx="1"/>
+  <rect class="hotspot" x="655" y="234" width="74" height="52" onclick="openModal('calc')"/>
+  <rect id="glow-calc" class="obj-glow" x="652" y="227" width="78" height="56" rx="3" fill="none" stroke="#80ff80" stroke-width="1.5" stroke-opacity=".5"/>
+
+  <!-- ═══ CLOCK ═══ -->
+  <circle class="Lb" cx="1000" cy="95" r="60"/>
+  <circle class="Lt" cx="1000" cy="95" r="50"/>
+  <text x="980" y="112" font-size="32" font-family="Cinzel,serif" fill="#c8d8c8" opacity=".07" font-weight="600">Cs</text>
+  <line id="hand-h" stroke="#c8d8c8" stroke-width="3"   stroke-linecap="round" x1="1000" y1="95" x2="1000" y2="95"/>
+  <line id="hand-m" stroke="#c8d8c8" stroke-width="2"   stroke-linecap="round" x1="1000" y1="95" x2="1000" y2="95"/>
+  <line id="hand-s" stroke="#80ff80" stroke-width="1.2" stroke-linecap="round" x1="1000" y1="95" x2="1000" y2="95" filter="url(#sg)"/>
+  <circle fill="#c8d8c8" cx="1000" cy="95" r="3"/>
+  <rect class="hotspot" x="940" y="35" width="120" height="120" onclick="openModal('clock')"/>
+  <circle id="glow-clock" class="obj-glow" cx="1000" cy="95" r="64" fill="none" stroke="#80ff80" stroke-width="1.5" stroke-opacity=".5"/>
+
+  <!-- ═══ CIPHER RUG ═══ -->
+  <ellipse fill="#1a1200" stroke="#c8a800" stroke-width="1.5" cx="800" cy="420" rx="160" ry="55"/>
+  <ellipse fill="none" stroke="#c8a800" stroke-width="0.5" cx="800" cy="420" rx="150" ry="48" opacity=".4"/>
+  <g transform="translate(300,0)" stroke="#c8a800" stroke-width="0.8" opacity=".3">
+    <line x1="344" y1="418" x2="340" y2="424"/>
+    <line x1="354" y1="414" x2="350" y2="420"/>
+    <line x1="364" y1="411" x2="360" y2="417"/>
+    <line x1="636" y1="411" x2="640" y2="417"/>
+    <line x1="646" y1="414" x2="650" y2="420"/>
+    <line x1="656" y1="418" x2="660" y2="424"/>
+  </g>
+  <ellipse class="hotspot" cx="800" cy="420" rx="160" ry="55" onclick="openModal('rug')"/>
+  <ellipse id="glow-rug" class="obj-glow" cx="800" cy="420" rx="164" ry="59" fill="none" stroke="#c8a800" stroke-width="1.5" stroke-opacity=".6"/>
+
+  <!-- ═══ STEREO STACK (cosmetic) ═══ -->
+  <rect class="L" x="1100" y="296" width="82" height="22" rx="1"/>
+  <rect class="L" x="1100" y="319" width="82" height="22" rx="1"/>
+  <rect class="L" x="1100" y="342" width="82" height="22" rx="1"/>
+  <rect fill="#060e06" stroke="#c8d8c8" stroke-width=".6" x="1110" y="301" width="30" height="10" rx="1"/>
+  <rect fill="#060e06" stroke="#c8d8c8" stroke-width=".6" x="1110" y="324" width="30" height="10" rx="1"/>
+  <circle class="Lt" cx="1165" cy="306" r="6"/>
+  <circle class="Lt" cx="1165" cy="330" r="6"/>
+  <circle class="Lt" cx="1165" cy="354" r="6"/>
+  <rect class="Lt" x="1152" y="274" width="10" height="22" rx="1"/>
+  <rect class="Lt" x="1162" y="278" width="8"  height="18" rx="1"/>
+  <rect class="Lt" x="1170" y="275" width="9"  height="20" rx="1"/>
+
+   <!-- ═══ Hint ═══ -->
+
+  <g class="hotspot" onclick="goToHintPage()" 
+   onmouseenter="document.getElementById('glow-hint').style.opacity='1'" 
+   onmouseleave="document.getElementById('glow-hint').style.opacity='0'">
+  
+  <circle cx="1120" cy="269" r="26" fill="none" stroke="#c8a800" stroke-width="1" opacity=".3"/>
+  <circle cx="1120" cy="269" r="20" fill="#100d00" stroke="#c8a800" stroke-width="1.5"/>
+  <text x="1120" y="275" font-size="18" fill="#c8a800" 
+        text-anchor="middle" font-family="Cinzel,serif" font-weight="bold" 
+        filter="url(#sg)">?</text>
+</g>
+  <!-- hint glow -->
+  <circle id="glow-hint" class="obj-glow" cx="1120" cy="269" r="28"
+    fill="none" stroke="#c8a800" stroke-width="2" stroke-opacity=".7"/>
+
+  </svg>
+
+</div>
+
+
+<!-- ═══════════════════════════════════
+     MODAL OVERLAY
+═══════════════════════════════════ -->
+<div id="overlay">
+
+  <!-- CLOCK -->
+  <div class="modal" id="m-clock" style="display:none">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">CLOCK <span class="modal-badge">Clue 01</span></div>
+    <div class="modal-body">
+      <div class="clock-face-m">
+        <div class="cs-bg-m">Cs</div>
+        <span id="modal-clock-t">--:--:--</span>
+      </div>
+      <div class="el-card">
+        <div class="el-box">
+          <div class="el-n">55</div>
+          <div class="el-s">Cs</div>
+          <div class="el-nm">CESIUM</div>
+        </div>
+        <div>
+          <div style="color:#80ff80;font-size:12px;margin-bottom:4px">Caesium-133</div>
+          <div style="font-size:11px;line-height:1.7">The SI second is defined by 9,192,631,770 oscillations of Cs-133 radiation. Time itself is measured in Cesium.</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:#2a5a2a;font-style:italic">The clock ticks in cesium time. What does it measure?</div>
+    </div>
+  </div>
+
+  <!-- TERMINAL -->
+  <div class="modal" id="m-pc" style="display:none">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">TERMINAL <span class="modal-badge">Clue 02</span></div>
+    <div class="modal-body">
+      <div class="term">
+        <div>&gt; DATA_DUMP.log — [CLASSIFIED]</div>
+        <div>&nbsp;</div>
+        <div>5.05594747350<span style="color:#80ff80">e11</span></div>
+        <div>3.83026323750<span style="color:#80ff80">e11</span></div>
+        <div>4.74952641450<span style="color:#80ff80">e11</span></div>
+        <div>&nbsp;</div>
+        <div class="pline">(3.37063164900<span style="color:#80ff80">e11</span></div>
+        <div class="pline">&nbsp;4.74952641450<span style="color:#80ff80">e11</span></div>
+        <div class="pline">&nbsp;7.66052647500<span style="color:#80ff80">e10</span></div>
+        <div class="pline">&nbsp;3.37063164900<span style="color:#80ff80">e11</span>)</div>
+        <div>&nbsp;</div>
+        <div>&gt; <span class="cur">█</span></div>
+      </div>
+      <div style="font-size:11px;color:#429242;font-style:italic">Numbers in scientific notation. What unit? What operation connects them?</div>
+    </div>
+  </div>
+
+  <!-- CALCULATOR -->
+  <div class="modal" id="m-calc" style="display:none">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">CALCULATOR <span class="modal-badge">Clue 03</span></div>
+    <div class="modal-body">
+      <div class="calc-wrap">
+        <div class="calc-scr" id="calc-display">0</div>
+        <div class="calc-g">
+          <div class="cb" onclick="calcInput('7')">7</div>
+          <div class="cb" onclick="calcInput('8')">8</div>
+          <div class="cb" onclick="calcInput('9')">9</div>
+          <div class="cb op" onclick="calcOp('/')">÷</div>
+          <div class="cb" onclick="calcInput('4')">4</div>
+          <div class="cb" onclick="calcInput('5')">5</div>
+          <div class="cb" onclick="calcInput('6')">6</div>
+          <div class="cb op" onclick="calcOp('*')">×</div>
+          <div class="cb" onclick="calcInput('1')">1</div>
+          <div class="cb" onclick="calcInput('2')">2</div>
+          <div class="cb" onclick="calcInput('3')">3</div>
+          <div class="cb op" onclick="calcOp('-')">−</div>
+          <div class="cb" onclick="calcInput('0')">0</div>
+          <div class="cb" onclick="calcDot()">.</div>
+          <div class="cb op" onclick="calcEquals()">=</div>
+          <div class="cb op" onclick="calcOp('+')">+</div>
+          <div class="cb" onclick="calcExp()">EXP</div>
+          <div class="cb" onclick="calcSign()">+/-</div>
+          <div class="cb op" onclick="calcClear()">AC</div>
+          <div class="cb op" onclick="calcBack()">←</div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:#2a5a2a;font-style:italic;margin-top:10px">
+        Hint: try dividing the numbers from the terminal...
+      </div>
+    </div>
+  </div>
+
+  <!-- SUN POSTER -->
+  <div class="modal" id="m-sun" style="display:none">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">POSTER <span class="modal-badge">Clue 04</span></div>
+    <div class="modal-body">
+      <div style="text-align:center;margin:16px 0 20px">
+        <svg width="80" height="80" viewBox="0 0 50 50">
+          <path fill="#c8d8c8" opacity=".8" d="M 24.984375 3.9863281 A 1.0001 1.0001 0 0 0 24 5 L 24 11 A 1.0001 1.0001 0 1 0 26 11 L 26 5 A 1.0001 1.0001 0 0 0 24.984375 3.9863281 z M 10.888672 9.890625 A 1.0001 1.0001 0 0 0 10.193359 11.607422 L 14.392578 15.806641 A 1.0001 1.0001 0 1 0 15.806641 14.392578 L 11.607422 10.193359 A 1.0001 1.0001 0 0 0 10.888672 9.890625 z M 39.080078 9.890625 A 1.0001 1.0001 0 0 0 38.392578 10.193359 L 34.193359 14.392578 A 1.0001 1.0001 0 1 0 35.607422 15.806641 L 39.806641 11.607422 A 1.0001 1.0001 0 0 0 39.080078 9.890625 z M 25 15 A 1.0001 1.0001 0 0 0 24.900391 15.003906 A 1.0001 1.0001 0 0 0 24.800781 15.017578 A 1.0001 1.0001 0 0 0 24.591797 15.082031 C 21.997611 15.191772 19.639402 16.21216 17.925781 17.925781 C 16.117449 19.734126 15 22.233333 15 25 C 15 30.533333 19.466667 35 25 35 C 29.15 35 32.699219 32.487109 34.214844 28.896484 C 34.720052 27.699609 35 26.383333 35 25 C 35 20.85 32.487109 17.300781 28.896484 15.785156 C 27.82556 15.333112 26.634837 15.134077 25.410156 15.082031 A 1.0001 1.0001 0 0 0 25.363281 15.0625 A 1.0001 1.0001 0 0 0 25.169922 15.011719 A 1.0001 1.0001 0 0 0 25.070312 15.001953 A 1.0001 1.0001 0 0 0 25 15 z M 5 24 A 1.0001 1.0001 0 1 0 5 26 L 11 26 A 1.0001 1.0001 0 1 0 11 24 L 5 24 z M 39 24 A 1.0001 1.0001 0 1 0 39 26 L 45 26 A 1.0001 1.0001 0 1 0 45 24 L 39 24 z M 15.080078 33.890625 A 1.0001 1.0001 0 0 0 14.392578 34.193359 L 10.193359 38.392578 A 1.0001 1.0001 0 1 0 11.607422 39.806641 L 15.806641 35.607422 A 1.0001 1.0001 0 0 0 15.080078 33.890625 z M 34.888672 33.890625 A 1.0001 1.0001 0 0 0 34.193359 35.607422 L 38.392578 39.806641 A 1.0001 1.0001 0 1 0 39.806641 38.392578 L 35.607422 34.193359 A 1.0001 1.0001 0 0 0 34.888672 33.890625 z M 24.984375 37.986328 A 1.0001 1.0001 0 0 0 24 39 L 24 45 A 1.0001 1.0001 0 1 0 26 45 L 26 39 A 1.0001 1.0001 0 0 0 24.984375 37.986328 z"/>
+        </svg>
+      </div>
+      <div style="text-align:center;font-family:'Cinzel',serif;font-size:15px;color:#c8d8c8;letter-spacing:2px;line-height:1.8;border-top:1px solid #1e3a1e;border-bottom:1px solid #1e3a1e;padding:14px 0;margin-bottom:12px">
+        "Don't fly too<br>close to the sun."
+      </div>
+      <div style="text-align:center;font-family:'Share Tech Mono',monospace;font-size:18px;color:#80ff80;letter-spacing:6px;margin:14px 0;text-shadow:0 0 12px rgba(0,255,80,.4)">
+        rdnl(Z)
+      </div>
+      <div style="font-size:10px;color:#2a5a2a;font-style:italic;text-align:center">— a warning by who?</div>
+    </div>
+  </div>
+
+  <!-- CIPHER RUG -->
+  <div class="modal" id="m-rug" style="display:none">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">CIPHER WHEEL <span class="modal-badge">Clue 05</span></div>
+    <div class="modal-body">
+      <div style="text-align:center;margin-bottom:12px;font-size:10px;color:#2a5a2a;letter-spacing:2px">What can this possibly be?</div>
+      <div style="display:flex;justify-content:center;margin:10px 0">
+        <img src="Image/AngleCipher.png" style="width:100%;border-radius:4px;opacity:0.9;"/>
+      </div>
+    </div>
+  </div>
+
+  <!-- WINDOW -->
+  <div class="modal" id="m-window" style="display:none">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">WINDOW <span class="modal-badge">Final Clue</span></div>
+    <div class="modal-body">
+      <div style="background:#05070a;border:1px solid #1e3a1e;padding:30px 15px;text-align:center">
+        <div style="font-family:'Inconsolata',monospace;color:#80ff80;font-size:28px;letter-spacing:4px;text-shadow:0 0 8px rgba(128,255,128,0.4)">
+          rm.
+        </div>
+        <div style="margin-top:20px;border-top:1px solid #1e3a1e;padding-top:15px">
+          <p style="font-size:11px;line-height:1.6;color:#429242;font-style:italic">
+            Beyond the reinforced glass, there is no sky. No stars. No horizon.
+            Only a vast, ink-black vacuum where matter used to be.
+            A single command remains etched into the fabric of the outside.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOOR -->
+  <div class="modal" id="m-door" style="display:none">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">PASSWORD KEYPAD <span class="modal-badge">Code</span></div>
+    <div class="modal-body">
+      <div style="text-align:center;font-size:10px;color:#2a5a2a;margin-bottom:4px;letter-spacing:2px">ENTER ACCESS CODE</div>
+      <div class="code-row" id="code-display"></div>
+      <div class="kbd-hint">↑ CLICK &amp; TYPE</div>
+      <input id="code-inp" type="text" maxlength="5" autocomplete="off" autocorrect="off"
+        spellcheck="false" style="position:absolute;opacity:0;pointer-events:none;width:0;height:0"/>
+      <button class="unlock-btn" onclick="submitCode()">UNLOCK</button>
+      <div class="cfb" id="cfb"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- WIN SCREEN -->
+<div id="win">
+  <div class="win-sym">◈</div>
+  <div class="win-title">ACCESS GRANTED</div>
+  <div class="win-sub">The door disengages. A corridor stretches beyond, lit by a single green light.</div>
+  <div class="win-q">「逆水行舟，不进则退」<br><span style="font-size:12px;opacity:.6">You pressed forward. The current yields.</span></div>
+  <button class="win-btn" onclick="document.getElementById('win').classList.remove('show')">// CONTINUE →</button>
+</div>
+
+
+<script src="script/rm.js"></script>
+</body>
+</html>

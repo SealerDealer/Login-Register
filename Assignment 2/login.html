@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>rm. // AUTHENTICATION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="styles/login.css"/>
+</head>
+<body>
+<div style="display:none">
+  <iframe id="bg-music" 
+    src="https://www.youtube.com/embed/n--SX54AUZU?enablejsapi=1&autoplay=1&mute=0&loop=1&playlist=n--SX54AUZU" 
+    allow="autoplay; encrypted-media" frameborder="0">
+  </iframe>
+</div>
+
+    <div class="scanline-traveler"></div>
+    <div class="ambient"></div>
+
+    <button id="music-btn" onclick="toggleMusic()">♪ MUSIC</button>
+
+    <div id="wrap">
+        <div class="sys-header">
+            <div class="sys-label">DECRYPTION_SESS // 03-A</div>
+            <h1 class="sys-title">rm.</h1>
+            <div class="sys-sub">TERMINAL_ACCESS_POINT</div>
+        </div>
+
+        <div class="terminal">
+    <div class="prompt-line">> USER_VALIDATION_REQUIRED</div>
+    
+    <div class="field">
+        <label class="field-label">AGENT_ID</label>
+        <input type="text" id="username" autocomplete="off" spellcheck="false">
+        <div id="err-user" class="field-err">// ID_REQUIRED</div>
+    </div>
+
+    <div class="field">
+        <label class="field-label">ACCESS_KEY</label>
+        <input type="password" id="password">
+        <div id="err-pass" class="field-err">// KEY_REQUIRED</div>
+    </div>
+
+    <div id="login-fb" class="cfb"></div>
+    <button class="submit-btn" onclick="doLogin()">AUTHORIZE</button>
+
+    <!-- ADD THIS -->
+    <div style="margin-top:20px;text-align:center;border-top:1px solid #1a3a1a;padding-top:16px">
+        <span style="font-size:11px;color:#2a5a2a;letter-spacing:1px">NO CREDENTIALS?</span>
+        <a href="register.html" style="
+            display:block;
+            margin-top:8px;
+            font-family:'Share Tech Mono',monospace;
+            font-size:11px;
+            letter-spacing:3px;
+            color:#4a9a4a;
+            text-decoration:none;
+            border:1px solid #1a3a1a;
+            padding:10px;
+            transition:all .2s;
+        "
+        onmouseover="this.style.color='#80ff80';this.style.borderColor='#2a5a2a'"
+        onmouseout="this.style.color='#4a9a4a';this.style.borderColor='#1a3a1a'">
+            REQUEST ACCESS →
+        </a>
+    </div>
+</div>
+    </div>
+
+    <div id="success-overlay">
+        <div class="sys-label" style="animation: blink 1s infinite;">INITIATING_SESSION...</div>
+        <div id="success-name" class="sys-title" style="font-size: 24px;">WELCOME_BACK</div>
+    </div>
+
+    <script src="script/login.js"></script>
+</body>
+</html>

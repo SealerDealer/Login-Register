@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>REQUEST ACCESS — rm.</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles/register.css">
+</head>
+<body>
+
+<div style="display:none">
+  <iframe id="bg-music" 
+    src="https://www.youtube.com/embed/n--SX54AUZU?enablejsapi=1&autoplay=1&mute=0&loop=1&playlist=n--SX54AUZU" 
+    allow="autoplay; encrypted-media" frameborder="0">
+  </iframe>
+</div>
+
+    <button id="music-btn" onclick="toggleMusic()">♪ MUSIC</button>
+
+<div class="ambient"></div>
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+<div id="wrap">
+  <div class="sys-header">
+    <div class="sys-label">SECURE TERMINAL v2.4.1</div>
+    <div class="sys-title">rm.</div>
+    <div class="sys-sub">NEW AGENT REGISTRATION PORTAL</div>
+  </div>
+
+  <div class="terminal">
+    <div class="prompt-line">INITIALISING REGISTRATION PROTOCOL<span class="blink">_</span></div>
+
+    <!-- progress bar -->
+    <div class="steps">
+      <div class="step active" id="s1"></div>
+      <div class="step" id="s2"></div>
+      <div class="step" id="s3"></div>
+      <div class="step" id="s4"></div>
+    </div>
+
+    <!-- AGENT ID -->
+    <div class="field">
+      <label class="field-label" for="reg-user">// AGENT ID</label>
+      <div class="field-wrap">
+        <input type="text" id="reg-user" placeholder="choose your agent id..." autocomplete="off" spellcheck="false" oninput="validateUser()"/>
+      </div>
+      <div class="field-err" id="err-reg-user"></div>
+      <div class="field-ok"  id="ok-reg-user"></div>
+    </div>
+
+    <!-- EMAIL -->
+    <div class="field">
+      <label class="field-label" for="reg-email">// SECURE CHANNEL (EMAIL)</label>
+      <div class="field-wrap">
+        <input type="email" id="reg-email" placeholder="agent@domain.com" autocomplete="off" oninput="validateEmail()"/>
+      </div>
+      <div class="field-err" id="err-reg-email"></div>
+      <div class="field-ok"  id="ok-reg-email"></div>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="field">
+      <label class="field-label" for="reg-pass">// ACCESS KEY</label>
+      <div class="field-wrap">
+        <input type="password" id="reg-pass" placeholder="min. 6 characters..." autocomplete="off" oninput="validatePass()"/>
+      </div>
+      <div class="strength-bar">
+        <div class="strength-seg" id="str1"></div>
+        <div class="strength-seg" id="str2"></div>
+        <div class="strength-seg" id="str3"></div>
+        <div class="strength-seg" id="str4"></div>
+      </div>
+      <div class="field-err" id="err-reg-pass"></div>
+      <div class="field-ok"  id="ok-reg-pass"></div>
+    </div>
+
+    <!-- CONFIRM PASSWORD -->
+    <div class="field">
+      <label class="field-label" for="reg-confirm">// CONFIRM ACCESS KEY</label>
+      <div class="field-wrap">
+        <input type="password" id="reg-confirm" placeholder="repeat access key..." autocomplete="off" oninput="validateConfirm()"/>
+      </div>
+      <div class="field-err" id="err-reg-confirm"></div>
+      <div class="field-ok"  id="ok-reg-confirm"></div>
+    </div>
+
+    <button class="submit-btn" onclick="doRegister()">REGISTER AGENT →</button>
+    <div id="reg-fb"></div>
+
+    <div class="divider"><span>ALREADY REGISTERED?</span></div>
+    <div class="login-link">
+      Have credentials? <a href="login.html">AUTHENTICATE →</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="script/register.js">   
+</script>
+</body>
+
+</html>

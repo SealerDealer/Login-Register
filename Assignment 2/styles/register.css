@@ -1,0 +1,149 @@
+:root {
+  --primary: #80ff80;    /* Neon Green */
+  --bright: #b3ffb3;    
+  --dim: #4a9a4a;        
+  --bg: #050805;         
+  --panel: #0a140a;      
+  --border: #2a5a2a;
+  --glow-text: 0 0 10px rgba(128, 255, 128, 0.5);
+  --glow-box: 0 0 25px rgba(0, 255, 80, 0.15);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;min-height:100%;background:var(--bg);font-family:'Share Tech Mono',monospace;overflow-x:hidden;color:#c8d8c8}
+
+/* ── MUSIC BUTTON (CONSISTENT NEON) ── */
+#music-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    background: transparent;
+    border: 1.5px solid var(--primary);
+    border-radius: 4px;
+    padding: 10px 20px;
+    color: var(--primary);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    z-index: 1000; /* Ensures it stays above CRT effects */
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(128, 255, 128, 0.2);
+    text-shadow: var(--glow-text);
+}
+
+#music-btn:hover {
+    background: var(--primary);
+    color: var(--bg);
+    box-shadow: 0 0 20px var(--primary);
+    font-weight: bold;
+}
+
+/* Style for when music is toggled off in JS */
+#music-btn.music-off {
+    border-color: var(--dim);
+    color: var(--dim);
+    box-shadow: none;
+    text-shadow: none;
+}
+
+/* ── CRT & SCANLINE EFFECTS ── */
+body::before {
+  content: ""; position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0, transparent 2px, rgba(0, 255, 80, 0.03) 3px);
+  pointer-events: none; z-index: 100;
+}
+
+body::after{
+  content:''; position:fixed; inset:0;
+  background-image: linear-gradient(rgba(0,255,80,0.05) 1px,transparent 1px), linear-gradient(90deg,rgba(0,255,80,0.05) 1px,transparent 1px);
+  background-size:60px 60px; pointer-events:none; z-index:0;
+}
+
+.ambient{
+  position:fixed; width:800px; height:800px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,255,80,0.06) 0%, transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; z-index:0;
+  animation:pulse 4s ease-in-out infinite;
+}
+@keyframes pulse{ 0%,100%{transform:translate(-50%,-50%) scale(1); opacity:1} 50%{transform:translate(-50%,-50%) scale(1.1); opacity:0.6} }
+
+#wrap{ position:relative; z-index:1; width:100%; min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; padding:60px 20px; }
+
+/* ── HEADER (Same as Login) ── */
+.sys-header { text-align: center; width: 100%; margin-bottom: 30px; }
+.sys-title{
+  font-family:'Cinzel',serif; font-size:48px; letter-spacing:16px; color:var(--bright);
+  text-shadow: 0 0 20px var(--primary), 0 0 40px rgba(0, 255, 80, 0.2); margin: 15px 0;
+}
+.sys-label, .sys-sub { font-size: 13px; letter-spacing: 6px; color: var(--primary); text-transform: uppercase; opacity: 0.8; }
+
+/* ── TERMINAL BOX ── */
+.terminal{
+  width:500px; max-width:100%; background:var(--panel); border:1px solid var(--primary); border-radius:3px; padding:45px;
+  box-shadow: var(--glow-box), inset 0 0 15px rgba(0,0,0,0.5); position:relative;
+  animation:fadeUp .8s ease .15s both;
+}
+
+.terminal::before{
+  content:'// NEW AGENT REGISTRATION'; position:absolute; top:-12px; left:25px;
+  font-size:12px; letter-spacing:3px; color: var(--bright); background:var(--bg); padding:0 12px;
+  text-shadow: var(--glow-text); font-weight: bold;
+}
+
+/* ── FORM ELEMENTS ── */
+.prompt-line{ font-size:16px; color:var(--primary); margin-bottom:35px; text-shadow: var(--glow-text); display:flex; gap:10px; }
+
+/* Progress Steps */
+.steps { display:flex; gap:8px; margin-bottom:30px; }
+.step { flex:1; height:3px; background: #1a2a1a; border-radius: 2px; }
+.step.active { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+.step.done { background: var(--dim); box-shadow: none; }
+
+
+.field { margin-bottom: 25px; }
+.field-label { font-size: 13px; color: var(--primary); margin-bottom: 12px; display: block; letter-spacing: 3px; font-weight: bold; }
+
+.field-wrap{ position:relative; }
+.field-wrap::before{ content:'>'; position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--primary); font-size:14px; pointer-events:none; }
+
+input, select {
+  width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--border); padding:14px 14px 14px 35px;
+  font-family:'Share Tech Mono', monospace; font-size:15px; color:var(--bright); outline:none; transition: 0.3s;
+}
+input:focus, select:focus { border-color:var(--primary); box-shadow: 0 0 15px rgba(0,255,80,0.25); }
+
+/* Message Spacing */
+.field-err, .field-ok { font-size: 11px; margin-top: 8px; letter-spacing: 1px; min-height: 15px;  opacity: 0; transition: opacity .2s; }
+.field-err.show, .field-ok.show { opacity: 1; }
+.field-err { color: #ff6060; }
+.field-ok { color: var(--primary); }
+
+.strength-bar { display:flex; gap:4px; margin-top:7px; }
+.strength-seg { flex:1; height:2px; border-radius:1px; background:#0e1a0e; transition:background .3s; }
+
+/* ── BUTTONS & LINKS ── */
+.submit-btn {
+  width:100%; margin-top:15px; padding:16px; background:transparent; border:1px solid var(--primary);
+  font-family:'Cinzel',serif; font-size:15px; letter-spacing:8px; color:var(--primary); cursor:pointer;
+  transition:all .3s; text-shadow: var(--glow-text); text-transform: uppercase;
+}
+.submit-btn:hover { background:var(--primary); color:var(--bg); box-shadow: 0 0 30px var(--primary); font-weight: bold; }
+
+.divider { display:flex; align-items:center; gap:15px; margin:30px 0 20px; }
+.divider span { font-size: 10px; color: var(--dim); letter-spacing: 3px; }
+
+.login-link { font-size: 12px; color: var(--dim); text-align: center; }
+.login-link a { color: var(--primary); text-decoration: none; font-weight: bold; }
+.login-link a:hover { text-shadow: 0 0 10px var(--primary); }
+
+
+
+@keyframes fadeUp{ from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)} }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.blink { animation: blink 1s step-end infinite; }
+@keyframes fadeDown {
+  from { opacity:0; transform:translateY(-16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
