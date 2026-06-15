@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login · MindSculpt</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 40px 36px;
+    }
+
+    /* Logo / Brand */
+    .brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .brand-icon {
+      font-size: 36px;
+      color: #f0c040;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #f0c040;
+      letter-spacing: 1px;
+    }
+
+    .brand-sub {
+      font-size: 13px;
+      color: #9090b0;
+      margin-top: 4px;
+    }
+
+    /* Form heading */
+    .form-heading {
+      font-size: 17px;
+      font-weight: 600;
+      color: #d0d0f0;
+      margin-bottom: 22px;
+    }
+
+    /* Field group */
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: #9090b0;
+      margin-bottom: 6px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 11px 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-size: 14px;
+      font-family: inherit;
+      transition: border-color 0.15s, background 0.15s;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: rgba(240,192,64,0.5);
+      background: rgba(255,255,255,0.09);
+    }
+
+    input::placeholder {
+      color: rgba(144,144,176,0.5);
+    }
+
+    /* Error message per field */
+    .field-err {
+      font-size: 12px;
+      color: #ff7070;
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* Password toggle wrapper */
+    .pw-wrap {
+      position: relative;
+    }
+
+    .pw-wrap input {
+      padding-right: 42px;
+    }
+
+    .pw-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #9090b0;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .pw-toggle:hover { color: #d0d0e8; }
+
+    /* Forgot link */
+    .forgot {
+      text-align: right;
+      margin-top: -10px;
+      margin-bottom: 22px;
+    }
+
+    .forgot a {
+      font-size: 12px;
+      color: #88aaff;
+      text-decoration: none;
+    }
+
+    .forgot a:hover { text-decoration: underline; }
+
+    /* Submit button */
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: rgba(240,192,64,0.15);
+      border: 1px solid rgba(240,192,64,0.4);
+      border-radius: 8px;
+      color: #f0c040;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.3px;
+    }
+
+    .btn-primary:hover { background: rgba(240,192,64,0.25); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    /* Divider */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .divider span {
+      font-size: 12px;
+      color: rgba(144,144,176,0.5);
+    }
+
+    /* Switch link */
+    .switch-link {
+      text-align: center;
+      font-size: 13px;
+      color: #9090b0;
+    }
+
+    .switch-link a {
+      color: #88aaff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .switch-link a:hover { text-decoration: underline; }
+
+    /* Global error banner */
+    #login-err {
+      background: rgba(220,60,60,0.12);
+      border: 1px solid rgba(220,60,60,0.25);
+      border-radius: 8px;
+      color: #ff7070;
+      font-size: 13px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    /* Global success banner */
+    #login-ok {
+      background: rgba(60,200,80,0.1);
+      border: 1px solid rgba(60,200,80,0.25);
+      border-radius: 8px;
+      color: #60dd80;
+      font-size: 13px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .auth-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-card">
+
+    <div class="brand">
+      <span class="brand-icon">♛</span>
+      <div class="brand-title">MindSculpt</div>
+      <div class="brand-sub">Gamify Brain Training Platform</div>
+    </div>
+
+    <div class="form-heading">Welcome back</div>
+
+    <div id="login-err"></div>
+    <div id="login-ok"></div>
+
+    <form id="login-form" action="login_process.php" method="POST" novalidate>
+
+      <div class="field">
+        <label for="username">Username or Email</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username or email" autocomplete="username" />
+        <div class="field-err" id="err-username">Please enter your username or email.</div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-wrap">
+          <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" />
+          <button type="button" class="pw-toggle" id="pw-toggle-btn" aria-label="Toggle password visibility">👁</button>
+        </div>
+        <div class="field-err" id="err-password">Please enter your password.</div>
+      </div>
+
+      <div class="forgot">
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="btn-primary">Log In</button>
+
+    </form>
+
+    <div class="divider"><span>or</span></div>
+
+    <div class="switch-link">
+      Don't have an account? <a href="register.html">Create one</a>
+    </div>
+
+  </div>
+
+  <script>
+    // Password visibility toggle
+    const pwInput = document.getElementById('password');
+    const pwBtn   = document.getElementById('pw-toggle-btn');
+    pwBtn.addEventListener('click', () => {
+      const show = pwInput.type === 'password';
+      pwInput.type = show ? 'text' : 'password';
+      pwBtn.textContent = show ? '🙈' : '👁';
+    });
+
+    // Client-side validation
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      let valid = true;
+
+      // Reset errors
+      document.querySelectorAll('.field-err').forEach(el => el.style.display = 'none');
+      document.getElementById('login-err').style.display = 'none';
+
+      // Validate username
+      if (!username) {
+        document.getElementById('err-username').style.display = 'block';
+        valid = false;
+      }
+
+      // Validate password
+      if (!password) {
+        document.getElementById('err-password').style.display = 'block';
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      // Submit via fetch to PHP
+      const formData = new FormData(this);
+
+      fetch('login_process.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const ok = document.getElementById('login-ok');
+          ok.textContent = 'Login successful! Redirecting...';
+          ok.style.display = 'block';
+          setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+        } else {
+          const err = document.getElementById('login-err');
+          err.textContent = data.message || 'Invalid username or password.';
+          err.style.display = 'block';
+        }
+      })
+      .catch(() => {
+        const err = document.getElementById('login-err');
+        err.textContent = 'Connection error. Please try again.';
+        err.style.display = 'block';
+      });
+    });
+  </script>
+
+</body>
+</html>
